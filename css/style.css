@@ -1,0 +1,39 @@
+h1 {
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+        
+}
+
+.suerte{
+    color: #00f;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+#simuladorBtn{
+    background-color: #0e0e57;
+    color: #ffffff;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: auto;
+
+    /* Sombra sutil para dar profundidad */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boton-section {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 5px;             
+    margin: auto;         
+    max-width: 450px;          
+    text-align: center;        
+    font-family: sans-serif
+}

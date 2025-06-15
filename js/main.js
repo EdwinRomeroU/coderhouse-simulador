@@ -5,14 +5,10 @@
 const palabras = ["javascript", "algoritmos", "desarrollo", "componente", "navegador", "procesador", "aplicacion", "funcion", "variable", "programacion"];
 
 // Palabra seleccionada al azar para que el usuario la adivine
-const palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
-console.log("Palabra seleccionada:", palabraSeleccionada);
+let palabraSeleccionada = [];
 
 // Arreglo para almacenar las letras adivinadas por el usuario
 const usuarioAdivina = [];
-
-// Inicializo el arreglo de letras adivinadas con guiones bajos
-rellenarUsuarioAdivina();
 
 //Arreglo para almacenar las letras que el usuario ingresó y que no están en la palabra
 const usuarioNoAdivina = [];
@@ -24,13 +20,31 @@ const usuarioNoAdivina = [];
 const cantidadIntentos = 15;
 
 // Variable para contar los intentos del usuario
-let usuarioIntentos = 0;
+let usuarioIntentos;
 
 // Variable para controlar si el usuario ha adivinado la palabra
 let usuarioAdivino = false;
 
 
 /********************* Sección de código para definir las funciones ****************************/
+
+// Funciòn para inicializar el juego
+function iniciarJuego() {
+    // Selecciono la palabra al azar del arreglo de palabras
+    palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
+    console.log("Palabra seleccionada:", palabraSeleccionada);
+    // Intentos en 1
+    usuarioIntentos = 1;
+    // Inicializo el arreglo de letras adivinadas con guiones bajos
+    usuarioAdivina.splice(0, usuarioAdivina.length);
+    rellenarUsuarioAdivina();
+    // Listado de letras no adivinadas en blanco
+    usuarioNoAdivina.splice(0, usuarioNoAdivina.length);
+    // Reinicio el estado de adivinanza del usuario
+    usuarioAdivino = false;
+    // Muestro el mensaje inicial al usuario
+    document.getElementById("mensaje").innerText = "¡¡¡ Buena Suerte !!!";
+}
 
 // Función para validar si la letra existe en la palabra seleccionada
 const letraEnPalabra = (letra) => palabraSeleccionada.includes(letra);
@@ -55,82 +69,110 @@ function actualizarUsuarioAdivina(letra) {
     }
 }
 
+function mostrarAvance(mensaje){
+    let aviso = "Avance del usuario:\n Palabra: " + usuarioAdivina.join(" ") + "\nIntentos: " + usuarioIntentos + "\nLetras no adivinadas: " + usuarioNoAdivina.join(", ");
+    switch (mensaje) {
+        case "adivino":
+            aviso = "¡¡¡ FELICIDADES !!! Has adivinado la palabra: " + palabraSeleccionada + "\n" + aviso;
+            break;
+        case "esta":
+            aviso = "¡Bien hecho! La letra está en la palabra.\n\n" + aviso;
+            break;
+        case "noesta":
+            aviso = "Lo siento, la letra no está en la palabra.\n\n" + aviso;
+            break;
+        case "fallo":
+            aviso = "Has agotado tus intentos. La palabra era: " + palabraSeleccionada + "\n\n" + aviso;
+            break;
+        default:
+            aviso = "\n\nAún no has adivinado la palabra.";
+    }
+    alert(aviso);
+}
+
 
 /********************* Sección principal del simulador ****************************/
+function iniciarSimulacion() {
 
-// Ciclo principal del simulador
-do {
-    
-    // Prompt para capturar la letra ingresada por el usuario
-    let usuarioLetra = prompt("Ingresa una letra:");
+    // Inicializo el juego
+    iniciarJuego();
 
-    // Convierto la letra en minúscula para mejorar la comparación
-    usuarioLetra = usuarioLetra.toLowerCase();
+    // Ciclo principal del simulador
+    do {
 
-    // Si el usuario ingresa la palabra salir, se cancela el juego
-    if (usuarioLetra === "salir") {
-        alert("Juego cancelado.");
-        break; // Salir del ciclo si el usuario cancela
-    }
+        // Prompt para capturar la letra ingresada por el usuario
+        let usuarioLetra = prompt("Ingresa una letra:");
 
-    // Validación para asegurarse de que el usuario ingrese una letra y no otro caracter
-    let letravalida = /^[a-zA-Z]$/.test(usuarioLetra);
+        // Convierto la letra en minúscula para mejorar la comparación
+        usuarioLetra = usuarioLetra.toLowerCase();
 
-    // Verifico si la letra es válida
-    if (!letravalida) {
+        // Si el usuario ingresa la palabra salir, se cancela el juego
+        if (usuarioLetra === "salir") {
+            alert("Juego cancelado.");
+            break; // Salir del ciclo si el usuario cancela
+        }
 
-        // Si la letra no es válida, muestro un mensaje de error
-        alert("Por favor, ingresa una letra válida.");
-        continue;
+        // Validación para asegurarse de que el usuario ingrese una letra y no otro caracter
+        let letravalida = /^[a-zA-Z]$/.test(usuarioLetra);
 
-    } else {
+        // Verifico si la letra es válida
+        if (!letravalida) {
 
-        if (letraEnPalabra(usuarioLetra)) {
-
-            // Si la letra está en la palabra, verifico si ya ha sido adivinada
-            if (!usuarioAdivina.includes(usuarioLetra)) {
-                // Si la letra está en la palabra, actualizo el arreglo de letras adivinadas
-                actualizarUsuarioAdivina(usuarioLetra);
-            } else {
-                alert("Ya has adivinado esta letra.");
-                continue;
-            }
-
-            // Verifico si el usuario ha adivinado la palabra
-            if (usuarioAdivinoPalabra()) {
-                usuarioAdivino = true;
-                alert("¡Felicidades! Has adivinado la palabra: " + palabraSeleccionada);
-            } else {
-                alert("¡Bien hecho! La letra está en la palabra.");
-            }
+            // Si la letra no es válida, muestro un mensaje de error
+            alert("Por favor, ingresa una letra válida.");
+            continue;
 
         } else {
 
-            // Si la letra no está en la palabra, verifico si ya ha sido intentada
-            if (!usuarioNoAdivina.includes(usuarioLetra)) {
-                // Si la letra no está en la palabra, la agrego al arreglo de letras no adivinadas
-                usuarioNoAdivina.push(usuarioLetra);
-                alert("Lo siento, la letra no está en la palabra.");
-            }
-            else {
-                alert("Ya has intentado con esta letra. La letra no está en la palabra");
-                continue;
-            }
-        }  
+            if (letraEnPalabra(usuarioLetra)) {
 
-    }
+                // Si la letra está en la palabra, verifico si ya ha sido adivinada
+                if (!usuarioAdivina.includes(usuarioLetra)) {
+                    // Si la letra está en la palabra, actualizo el arreglo de letras adivinadas
+                    actualizarUsuarioAdivina(usuarioLetra);
+                } else {
+                    alert("Ya has adivinado esta letra.");
+                    continue;
+                }
 
-    console.log("Letras adivinadas:", usuarioAdivina);
-    console.log("Letras No adivinadas:", usuarioNoAdivina);
+                // Verifico si el usuario ha adivinado la palabra
+                if (usuarioAdivinoPalabra()) {
+                    usuarioAdivino = true;
+                    mostrarAvance("adivino"); // felicita al usuario por ganar y muentra el avance final
+                    document.getElementById("mensaje").innerText = "¡Felicidades! Has adivinado la palabra: " + palabraSeleccionada;
+                } else {
+                    mostrarAvance("esta"); // Muestra el avance actual del usuario
+                }
 
-    // Incremento el contador de intentos del usuario
-    usuarioIntentos++;
-    console.log("Intentos del usuario:", usuarioIntentos);
+            } else {
 
-    // Verifico si el usuario ha agotado sus intentos  
-    if (usuarioIntentos >= cantidadIntentos) {
-        alert("Has agotado tus intentos. La palabra era: " + palabraSeleccionada);
-        break;
-    }
+                // Si la letra no está en la palabra, verifico si ya ha sido intentada
+                if (!usuarioNoAdivina.includes(usuarioLetra)) {
+                    // Si la letra no está en la palabra, la agrego al arreglo de letras no adivinadas
+                    usuarioNoAdivina.push(usuarioLetra);
+                    mostrarAvance("noesta"); // Muestra el avance actual del usuario
+                }
+                else {
+                    alert("Ya has intentado con esta letra. La letra no está en la palabra");
+                    continue;
+                }
+            }  
 
-} while (!usuarioAdivino);
+        }
+
+        console.log("Letras adivinadas:", usuarioAdivina);
+        console.log("Letras No adivinadas:", usuarioNoAdivina);
+
+        // Verifico si el usuario ha agotado sus intentos  
+        if (usuarioIntentos >= cantidadIntentos) {
+            mostrarAvance("fallo");
+            document.getElementById("mensaje").innerText = "Haz superado la cantidad de intentos permitidos. La palabra era: " + palabraSeleccionada;
+            break;
+        }
+
+        // Incremento el contador de intentos del usuario
+        usuarioIntentos++;
+        console.log("Intentos del usuario:", usuarioIntentos);
+
+    } while (!usuarioAdivino);
+}

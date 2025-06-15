@@ -3,9 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Simulador JavaScript</title>
 </head>
 <body>
+
+    <!-- Titulo y descripción del simulador -->
+    <h1>Simulador JavaScript</h1>
+    <p>Este es un simulador desarrollado en JavaScript que te permite adivinar una palabra, mediante el ingreso de diferentes letras. El objetivo es adivinar la palabra antes de que se acaben los intentos.</p>
+
+    <!-- Instrucciones del simulador -->
+    <section class="instrucciones">
+        <h2>Instrucciones</h2>
+        <p>
+            Para jugar, debes adivinar la palabra ingresando letras una por una. <br>
+            Tienes un número limitado de intentos (15) para adivinar la palabra completa.<br>
+            En el momento que desees, digita "salir" para abandonar el juego.
+        </p>
+    </section>
+
+    <section class="boton-section">
+        <h2 class="suerte" id="mensaje">¡¡¡ Buena suerte !!!</h2>
+        <div class="boton-container">
+            <button id="simuladorBtn" onclick="iniciarSimulacion()">Iniciar Simulación</button>
+        </div>
+    </section>
+
     <script src="./js/main.js"></script>
 </body>
 </html>
