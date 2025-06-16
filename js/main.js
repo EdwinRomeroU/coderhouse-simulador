@@ -70,7 +70,7 @@ function actualizarUsuarioAdivina(letra) {
 }
 
 function mostrarAvance(mensaje){
-    let aviso = "Avance del usuario:\n Palabra: " + usuarioAdivina.join(" ") + "\nIntentos: " + usuarioIntentos + "\nLetras no adivinadas: " + usuarioNoAdivina.join(", ");
+    let aviso = "Avance del usuario:\nPalabra: " + usuarioAdivina.join(" ") + "\nIntentos: " + usuarioIntentos + "\nLetras no adivinadas: " + usuarioNoAdivina.join(", ");
     switch (mensaje) {
         case "adivino":
             aviso = "¡¡¡ FELICIDADES !!! Has adivinado la palabra: " + palabraSeleccionada + "\n" + aviso;
@@ -101,7 +101,7 @@ function iniciarSimulacion() {
     do {
 
         // Prompt para capturar la letra ingresada por el usuario
-        let usuarioLetra = prompt("Ingresa una letra:");
+        let usuarioLetra = prompt("Palabra: " + usuarioAdivina.join(" ") + "\n\nIngresa una letra:");
 
         // Convierto la letra en minúscula para mejorar la comparación
         usuarioLetra = usuarioLetra.toLowerCase();
@@ -109,7 +109,7 @@ function iniciarSimulacion() {
         // Si el usuario ingresa la palabra salir, se cancela el juego
         if (usuarioLetra === "salir") {
             alert("Juego cancelado.");
-            break; // Salir del ciclo si el usuario cancela
+            break;
         }
 
         // Validación para asegurarse de que el usuario ingrese una letra y no otro caracter
@@ -138,10 +138,13 @@ function iniciarSimulacion() {
                 // Verifico si el usuario ha adivinado la palabra
                 if (usuarioAdivinoPalabra()) {
                     usuarioAdivino = true;
-                    mostrarAvance("adivino"); // felicita al usuario por ganar y muentra el avance final
+                     // felicita al usuario por ganar y muentra el avance final
+                    mostrarAvance("adivino");
                     document.getElementById("mensaje").innerText = "¡Felicidades! Has adivinado la palabra: " + palabraSeleccionada;
+                    document.getElementById("mensaje").style.color = "blue"; // Cambia el color del texto a verde
                 } else {
-                    mostrarAvance("esta"); // Muestra el avance actual del usuario
+                    // Muestra el avance actual del usuario
+                    mostrarAvance("esta");
                 }
 
             } else {
@@ -150,7 +153,8 @@ function iniciarSimulacion() {
                 if (!usuarioNoAdivina.includes(usuarioLetra)) {
                     // Si la letra no está en la palabra, la agrego al arreglo de letras no adivinadas
                     usuarioNoAdivina.push(usuarioLetra);
-                    mostrarAvance("noesta"); // Muestra el avance actual del usuario
+                    // Muestra el avance actual del usuario
+                    mostrarAvance("noesta"); 
                 }
                 else {
                     alert("Ya has intentado con esta letra. La letra no está en la palabra");
@@ -167,6 +171,7 @@ function iniciarSimulacion() {
         if (usuarioIntentos >= cantidadIntentos) {
             mostrarAvance("fallo");
             document.getElementById("mensaje").innerText = "Haz superado la cantidad de intentos permitidos. La palabra era: " + palabraSeleccionada;
+            document.getElementById("mensaje").style.color = "red";
             break;
         }
 

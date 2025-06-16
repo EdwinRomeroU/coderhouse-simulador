@@ -1,3 +1,20 @@
+html {
+    background-color: #fff;
+}
+
+body {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f0f2f5;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    /* Opcional: Define una fuente base para todo el body */
+    font-family: Arial, sans-serif;
+    /* Opcional: Color de texto base */
+    color: #333;
+}
+
 h1 {
     color: #000;
     font-weight: bold;
@@ -6,14 +23,13 @@ h1 {
 }
 
 .suerte{
-    color: #00f;
     font-weight: bold;
     text-align: center;
     padding-bottom: 5px;
 }
 
 #simuladorBtn{
-    background-color: #0e0e57;
+    background-color: #000;
     color: #ffffff;
     padding: 6px 12px;
     border: none;
@@ -27,13 +43,12 @@ h1 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.boton-section {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    padding: 5px;             
-    margin: auto;         
-    max-width: 450px;          
+.boton-section {      
     text-align: center;        
     font-family: sans-serif
+}
+
+#simuladorBtn:hover {
+    background-color: #fff;
+    color: #000;
 }
