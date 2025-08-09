@@ -29,6 +29,17 @@
         </div>
     </section>
 
+    <section class="simulador-container" id="simuladorContainer" style="display: none;">
+        <div class="simulador">
+            <p id="palabraOculta"></p>
+            <p id="mensajeAvance"></p>
+            <input type="text" id="letraInput" placeholder="Ingresa una letra" maxlength="1">
+            <button id="adivinarBtn" onclick="adivinarLetra()">Adivinar Letra</button>
+            <button id="salirBtn" onclick="salir()">Salir</button>
+            <p id="mostrarMensaje"></p>
+        </div>
+    </section>
+
     <script src="./js/main.js"></script>
 </body>
 </html>

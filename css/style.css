@@ -52,3 +52,81 @@ h1 {
     background-color: #fff;
     color: #000;
 }
+
+/* Estilo para el contenedor principal del simulador */
+.simulador-container {
+    
+    /* Configuración del fondo y bordes */
+    background-color: #f0f0f0; /* Un gris claro */
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para efecto de profundidad */
+    
+    /* Asegura que el contenido esté visible */
+    z-index: 1000;
+}
+
+/* Estilo para el div interno que contiene los elementos del simulador */
+.simulador {
+    text-align: center; /* Centra el texto y los elementos de bloque */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo para el título del simulador */
+.simulador h2 {
+    color: #333; /* Un gris oscuro */
+    margin-bottom: 15px;
+}
+
+/* Estilo para el párrafo donde se muestra la palabra */
+.simulador #palabraOculta {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 5px; /* Espaciado entre letras */
+    margin: 20px 0;
+}
+
+/* Estilo para el campo de entrada de texto */
+.simulador #letraInput {
+    padding: 10px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Estilo para los botones */
+.simulador button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transición suave en el color de fondo */
+}
+
+/* Color específico para el botón de adivinar */
+.simulador #adivinarBtn {
+    background-color: #28a745; /* Verde */
+}
+
+/* Color específico para el botón de salir */
+.simulador #salirBtn {
+    background-color: #dc3545; /* Rojo */
+}
+
+/* Efecto hover para los botones */
+.simulador button:hover {
+    filter: brightness(1.1); /* Aclara el color del botón al pasar el mouse */
+}
+
+/* Estilo para el párrafo de los mensajes */
+.simulador #mostrarMensaje {
+    margin-top: 15px;
+    font-size: 18px;
+    min-height: 20px; /* Para evitar que el diseño salte cuando no hay mensaje */
+}

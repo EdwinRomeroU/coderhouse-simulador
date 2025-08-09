@@ -70,7 +70,8 @@ function actualizarUsuarioAdivina(letra) {
 }
 
 function mostrarAvance(mensaje){
-    let aviso = "Avance del usuario:\nPalabra: " + usuarioAdivina.join(" ") + "\nIntentos: " + usuarioIntentos + "\nLetras no adivinadas: " + usuarioNoAdivina.join(", ");
+    let palabra = "Palabra: " + usuarioAdivina.join(" ");
+    let aviso = "Intentos: " + usuarioIntentos + "\nLetras no adivinadas: " + usuarioNoAdivina.join(", ");
     switch (mensaje) {
         case "adivino":
             aviso = "¡¡¡ FELICIDADES !!! Has adivinado la palabra: " + palabraSeleccionada + "\n" + aviso;
@@ -87,29 +88,33 @@ function mostrarAvance(mensaje){
         default:
             aviso = "\n\nAún no has adivinado la palabra.";
     }
-    alert(aviso);
+    document.getElementById("palabraOculta").innerText = palabra;
+    document.getElementById("mensajeAvance").innerText = aviso;
 }
 
+/********************* Sección de código para habilitar el formulario ****************************/
+function habilitarFormulario() {
+    // Habilito el contenedor del formulario
+    document.getElementById("simuladorContainer").style.display = "block";
+    // Muestro la palabra oculta al usuario
+    document.getElementById("palabraOculta").innerText = "Palabra: " + usuarioAdivina.join(" ");
+}
 
-/********************* Sección principal del simulador ****************************/
-function iniciarSimulacion() {
+/********************* Sección de código para deshabilitar el formulario ****************************/
+function deshabilitarFormulario() {
+    // Habilito el contenedor del formulario
+    document.getElementById("simuladorContainer").style.display = "none";
+}
 
-    // Inicializo el juego
-    iniciarJuego();
+function adivinarLetra() {
 
-    // Ciclo principal del simulador
-    do {
+    // Obtengo la letra ingresada por el usuario
+    let usuarioLetra = document.getElementById("letraInput").value.trim();
 
-        // Prompt para capturar la letra ingresada por el usuario
-        let usuarioLetra = prompt("Palabra: " + usuarioAdivina.join(" ") + "\n\nIngresa una letra:");
-
-        // Convierto la letra en minúscula para mejorar la comparación
-        usuarioLetra = usuarioLetra.toLowerCase();
-
-        // Si el usuario ingresa la palabra salir, se cancela el juego
+    // Si el usuario ingresa la palabra salir, se cancela el juego
         if (usuarioLetra === "salir") {
-            alert("Juego cancelado.");
-            break;
+            deshabilitarFormulario();
+            return;
         }
 
         // Validación para asegurarse de que el usuario ingrese una letra y no otro caracter
@@ -119,8 +124,7 @@ function iniciarSimulacion() {
         if (!letravalida) {
 
             // Si la letra no es válida, muestro un mensaje de error
-            alert("Por favor, ingresa una letra válida.");
-            continue;
+            document.getElementById("mostrarMensaje").innerText = "Por favor, ingresa una letra válida.";
 
         } else {
 
@@ -131,8 +135,8 @@ function iniciarSimulacion() {
                     // Si la letra está en la palabra, actualizo el arreglo de letras adivinadas
                     actualizarUsuarioAdivina(usuarioLetra);
                 } else {
-                    alert("Ya has adivinado esta letra.");
-                    continue;
+                    document.getElementById("mostrarMensaje").innerText = "Ya has adivinado esta letra.";
+                    return;
                 }
 
                 // Verifico si el usuario ha adivinado la palabra
@@ -157,27 +161,89 @@ function iniciarSimulacion() {
                     mostrarAvance("noesta"); 
                 }
                 else {
-                    alert("Ya has intentado con esta letra. La letra no está en la palabra");
-                    continue;
+                    document.getElementById("mostrarMensaje").innerText = "Ya has intentado con esta letra. La letra no está en la palabra.";
+                    return;
                 }
             }  
 
+            console.log("Letras adivinadas:", usuarioAdivina);
+            console.log("Letras No adivinadas:", usuarioNoAdivina);
+
+            // Verifico si el usuario ha agotado sus intentos  
+            if (usuarioIntentos >= cantidadIntentos) {
+                mostrarAvance("fallo");
+                document.getElementById("mensaje").innerText = "Haz superado la cantidad de intentos permitidos. La palabra era: " + palabraSeleccionada;
+                document.getElementById("mensaje").style.color = "red";
+                return;
+            }
+
+            // Incremento el contador de intentos del usuario
+            usuarioIntentos++;
+            // Limpio el campo de entrada de texto
+            document.getElementById("letraInput").value = "";
+            console.log("Intentos del usuario:", usuarioIntentos);
+
         }
 
-        console.log("Letras adivinadas:", usuarioAdivina);
-        console.log("Letras No adivinadas:", usuarioNoAdivina);
 
-        // Verifico si el usuario ha agotado sus intentos  
-        if (usuarioIntentos >= cantidadIntentos) {
-            mostrarAvance("fallo");
-            document.getElementById("mensaje").innerText = "Haz superado la cantidad de intentos permitidos. La palabra era: " + palabraSeleccionada;
-            document.getElementById("mensaje").style.color = "red";
-            break;
+}
+
+/********************* Sección de Local Storage *********************************************/
+function almacenarLocalStorage() {
+    // Almaceno los datos del usuario en el Local Storage
+    if(!usuarioAdivino && usuarioIntentos > 1){
+        localStorage.setItem("palabraSeleccionada", palabraSeleccionada);
+        localStorage.setItem("usuarioAdivina", JSON.stringify(usuarioAdivina));
+        localStorage.setItem("usuarioNoAdivina", JSON.stringify(usuarioNoAdivina));
+        localStorage.setItem("usuarioIntentos", usuarioIntentos);
+    } else {
+        localStorage.clear();
+    }
+}
+
+/********************* Sección principal del simulador ****************************/
+function iniciarSimulacion() {
+
+    const datosGuardados = localStorage.getItem("palabraSeleccionada");
+    if (datosGuardados) {
+        const continuar = prompt("¡Bienvenido de nuevo! ¿Quieres continuar con el juego anterior? (Escribe 's' para continuar o 'n' para iniciar un nuevo juego)");
+        
+        if (continuar === "s") {
+            // Si hay datos guardados, los cargo en las variables correspondientes
+            palabraSeleccionada = localStorage.getItem("palabraSeleccionada");
+            usuarioAdivina.push(...JSON.parse(localStorage.getItem("usuarioAdivina")));
+            usuarioNoAdivina.push(...JSON.parse(localStorage.getItem("usuarioNoAdivina")));
+            usuarioIntentos = parseInt(localStorage.getItem("usuarioIntentos"));
+            
+            // Muestro el mensaje inicial al usuario
+            document.getElementById("mensaje").innerText = "¡¡¡ Bienvenido de nuevo !!! Continúa adivinando la palabra.";
+            document.getElementById("mensaje").style.color = "black"; // Cambia el color
+        } else if (continuar === "n") {
+            // Si el usuario no quiere continuar, inicio un nuevo juego
+            document.getElementById("mensajeAvance").innerText = "";
+            document.getElementById("mensaje").innerText = "¡Nuevo juego iniciado!";
+            localStorage.clear();
+            iniciarJuego();
+        } else {
+            alert("Opción no válida. Por favor, escribe 's' para continuar o 'n' para iniciar un nuevo juego.");
+            return; // Salgo de la función para que el usuario pueda intentar de nuevo
         }
+    }
+    else {
+        // Si no hay datos guardados, inicio un nuevo juego
+        iniciarJuego();
+    }
 
-        // Incremento el contador de intentos del usuario
-        usuarioIntentos++;
-        console.log("Intentos del usuario:", usuarioIntentos);
+    // Habilito el contenedor del formulario
+    habilitarFormulario();
 
-    } while (!usuarioAdivino);
+}
+
+/********************* Sección salir ****************************/
+function salir() {
+    // Almaceno los datos del usuario en el Local Storage
+    almacenarLocalStorage();
+    // Deshabilito el formulario y muestro un mensaje de agradecimiento
+    deshabilitarFormulario();
+    let aviso = "Gracias por participar.";
 }
